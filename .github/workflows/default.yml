@@ -30,7 +30,7 @@ jobs:
       - name: Get branch envs
         id: branch_name
         run: |
-          echo ::set-output name=SOURCE_NAME::${GITHUB_REF#refs/feature/*/}
+          echo ::set-output name=SOURCE_NAME::${GITHUB_REF#refs/*/}
           echo ::set-output name=SOURCE_BRANCH::${GITHUB_REF#refs/heads/}
 
       - name: Debug
@@ -43,11 +43,11 @@ jobs:
 
       - name: Build
         run: |
-          GOOS=darwin GOARCH=amd64 make build RELEASE=$SOURCE_NAME OUTPUT=$APP_NAME_$SOURCE_NAME_darwin_amd64
-          GOOS=linux GOARCH=amd64 make build RELEASE=$SOURCE_NAME OUTPUT=$APP_NAME_$SOURCE_NAME_linux_amd64
+          GOOS=darwin GOARCH=amd64 make build RELEASE=$SOURCE_BRANCH BINARY_NAME=$APP_NAME_$SOURCE_BRANCH_darwin_amd64
+          GOOS=linux GOARCH=amd64 make build RELEASE=$SOURCE_BRANCH BINARY_NAME=$APP_NAME_$SOURCE_BRANCH_linux_amd64
         env: 
           APP_NAME: ${{ env.app_name }}
-          SOURCE_NAME: ${{ steps.branch_name.outputs.SOURCE_NAME }}
+          SOURCE_BRANCH: ${{ steps.branch_name.outputs.SOURCE_BRANCH }}
       
       - uses: actions/upload-artifact@v2
         with:

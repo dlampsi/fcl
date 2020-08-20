@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fcl/info"
 	"flag"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -20,6 +22,7 @@ var (
 	flagSkipDirs   string
 	flagSkipFiles  string
 	flagCheckMode  bool
+	flagVersion    bool
 	exceptionPaths []string
 	ttlDuration    time.Duration
 	minSize        int64
@@ -40,8 +43,14 @@ func main() {
 	flag.BoolVar(&flagCheckMode, "check", false, "Run app in check mode. Only list files to delete")
 	flag.BoolVar(&flagNoColors, "no-colors", false, "Disable colors in app output")
 	flag.BoolVar(&flagVerbose, "v", false, "Verbose output")
+	flag.BoolVar(&flagVersion, "version", false, "Prints app version")
 
 	flag.Parse()
+
+	if flagVersion {
+		fmt.Println(info.ForPrint())
+		os.Exit(0)
+	}
 
 	// Configure logging
 	logFormater := &log.TextFormatter{
