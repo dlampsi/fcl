@@ -22,7 +22,7 @@ linter: ## Apply linter
 	golangci-lint run -c ./.golangci.yml --timeout 3m ./...
 
 build: clean ## Build package
-	@go build \
+	go build \
 	-ldflags "-s -w -X ${PROJECT_NAME}/info.Version=${RELEASE} \
 	-X ${PROJECT_NAME}/info.BuildNumber=${BUILD_NUMBER} \
 	-X ${PROJECT_NAME}/info.BuildTime=${BUILD_TIME} \
