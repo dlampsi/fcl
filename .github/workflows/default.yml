@@ -3,8 +3,10 @@ on:
   push:
     branches:    
       - 'feature/*'
+      - 'hotfix/*'
     paths-ignore:
       - README.md
+      - LICENSE
     tags-ignore:
       - v*
 jobs:
@@ -30,27 +32,16 @@ jobs:
       - name: Get branch envs
         id: branch_name
         run: |
-          echo ::set-output name=SOURCE_NAME::${GITHUB_REF#refs/*/}
           echo ::set-output name=SOURCE_BRANCH::${GITHUB_REF#refs/heads/feature/}
-
-      - name: Debug
-        run: |
-          echo $SOURCE_NAME
-          echo $SOURCE_BRANCH
-          echo BINARY_NAME=${APP_NAME}_${SOURCE_BRANCH}_linux_amd64
-        env: 
-          APP_NAME: ${{ env.app_name }}
-          SOURCE_NAME: ${{ steps.branch_name.outputs.SOURCE_NAME }}
-          SOURCE_BRANCH: ${{ steps.branch_name.outputs.SOURCE_BRANCH }}
 
       - name: Build
         run: |
-          GOOS=darwin GOARCH=amd64 make build RELEASE=${SOURCE_BRANCH} BINARY_NAME=${APP_NAME}_${SOURCE_BRANCH}_linux_amd64
+          GOOS=darwin GOARCH=amd64 make build RELEASE=${SOURCE_BRANCH} BINARY_NAME=${APP_NAME}_${SOURCE_BRANCH}_darwin_amd64
           GOOS=linux GOARCH=amd64 make build RELEASE=${SOURCE_BRANCH} BINARY_NAME=${APP_NAME}_${SOURCE_BRANCH}_linux_amd64
         env: 
           APP_NAME: ${{ env.app_name }}
           SOURCE_BRANCH: ${{ steps.branch_name.outputs.SOURCE_BRANCH }}
-      
+
       - uses: actions/upload-artifact@v2
         with:
-          path: ${{ env.app_name }}_${{ steps.branch_name.outputs.SOURCE_BRANCH }}_darwin_amd64
+          path: ${{ env.app_name }}_${{ steps.branch_name.outputs.SOURCE_BRANCH }}_*
