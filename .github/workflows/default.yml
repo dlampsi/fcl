@@ -27,7 +27,11 @@ jobs:
       - name: Tests
         run:  go test ./...
 
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)}
+
       - name: Build
         run: |
-          GOOS=darwin GOARCH=amd64 make build RELEASE=${GITHUB_REF##*/} OUTPUT=fcl_darwin_amd64
-          GOOS=linux GOARCH=amd64 make build RELEASE=${GITHUB_REF##*/} OUTPUT=fcl_linux_amd64
+          GOOS=darwin GOARCH=amd64 make build RELEASE=${GITHUB_REF##*/} OUTPUT=fcl_${{ steps.get_version.outputs.VERSION }}_darwin_amd64
+          GOOS=linux GOARCH=amd64 make build RELEASE=${GITHUB_REF##*/} OUTPUT=fcl_${{ steps.get_version.outputs.VERSION }}_linux_amd64
