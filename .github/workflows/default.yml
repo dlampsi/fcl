@@ -34,11 +34,21 @@ jobs:
           echo ::set-output name=SOURCE_BRANCH::${GITHUB_REF#refs/heads/}
           echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
 
-      - name: Build
+      - name: Debug
+        run: |
+          echo $SOURCE_BRANCH
+          echo $SOURCE_NAME
+          echo $SOURCE_TAG
         env: 
           SOURCE_NAME: ${{ steps.branch_name.outputs.SOURCE_NAME }}
           SOURCE_BRANCH: ${{ steps.branch_name.outputs.SOURCE_BRANCH }}
           SOURCE_TAG: ${{ steps.branch_name.outputs.SOURCE_TAG }}
+
+      - name: Build
         run: |
           GOOS=darwin GOARCH=amd64 make build RELEASE=$SOURCE_BRANCH OUTPUT=fcl_darwin_amd64
           GOOS=linux GOARCH=amd64 make build RELEASE=$SOURCE_BRANCH OUTPUT=fcl_linux_amd64
+        env: 
+          SOURCE_NAME: ${{ steps.branch_name.outputs.SOURCE_NAME }}
+          SOURCE_BRANCH: ${{ steps.branch_name.outputs.SOURCE_BRANCH }}
+          SOURCE_TAG: ${{ steps.branch_name.outputs.SOURCE_TAG }}
