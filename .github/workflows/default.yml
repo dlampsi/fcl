@@ -53,4 +53,4 @@ jobs:
       
       - uses: actions/upload-artifact@v2
         with:
-          path: ${{ env.app_name }}_*_darwin_amd64
+          path: ${{ env.app_name }}_${{ steps.branch_name.outputs.SOURCE_BRANCH }}_darwin_amd64
