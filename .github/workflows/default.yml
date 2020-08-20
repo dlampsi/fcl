@@ -37,7 +37,9 @@ jobs:
         run: |
           echo $SOURCE_NAME
           echo $SOURCE_BRANCH
+          echo BINARY_NAME=$APP_NAME_$SOURCE_BRANCH_linux_amd64
         env: 
+          APP_NAME: ${{ env.app_name }}
           SOURCE_NAME: ${{ steps.branch_name.outputs.SOURCE_NAME }}
           SOURCE_BRANCH: ${{ steps.branch_name.outputs.SOURCE_BRANCH }}
 
