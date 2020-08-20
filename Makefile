@@ -13,7 +13,6 @@ all: clean build linter test build ## Run linter, tests and build package
 
 clean:
 	@go clean
-	@rm -rf ./$(BINARY_NAME)
 
 test: ## Run tests
 	go test ./...
