@@ -1,0 +1,46 @@
+name: release
+on: 
+  release:
+    types: [published]
+jobs:
+  build:
+    env:
+      app_name: fcl
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04]
+    steps:
+      - name: Install Go 1.13
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.13
+
+      - name: Checkout repo
+        uses: actions/checkout@v1
+        
+      - name: Tests
+        run:  go test -v ./...
+
+      - name: Get branch envs
+        id: branch_envs
+        run: |
+          echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
+
+      - name: Build
+        run: |
+          GOOS=darwin GOARCH=amd64 make build RELEASE=${SOURCE_TAG} BINARY_NAME=${APP_NAME}_${SOURCE_TAG}_darwin_amd64
+          GOOS=linux GOARCH=amd64 make build RELEASE=${SOURCE_TAG} BINARY_NAME=${APP_NAME}_${SOURCE_TAG}_linux_amd64
+        env: 
+          APP_NAME: ${{ env.app_name }}
+          SOURCE_TAG: ${{ steps.branch_envs.outputs.SOURCE_TAG }}
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.app_name }}_${{ steps.branch_envs.outputs.SOURCE_TAG }}_darwin_amd64
+          path: ${{ env.app_name }}_${{ steps.branch_envs.outputs.SOURCE_TAG }}_darwin_amd64
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.app_name }}_${{ steps.branch_envs.outputs.SOURCE_TAG }}_linux_amd64
+          path: ${{ env.app_name }}_${{ steps.branch_envs.outputs.SOURCE_TAG }}_linux_amd64

@@ -2,15 +2,17 @@ name: default
 on: 
   push:
     branches:    
-      - master
-      - 'feature/**'
-      - 'fix/**'
+      - 'feature/*'
+      - 'hotfix/*'
     paths-ignore:
       - README.md
+      - LICENSE
     tags-ignore:
       - v*
 jobs:
   build:
+    env:
+      app_name: fcl
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -27,7 +29,25 @@ jobs:
       - name: Tests
         run:  go test ./...
 
-      - name: Build
-        run: |
-          GOOS=darwin GOARCH=amd64 make build RELEASE=${GITHUB_REF##*/} OUTPUT=fcl_darwin_amd64
-          GOOS=linux GOARCH=amd64 make build RELEASE=${GITHUB_REF##*/} OUTPUT=fcl_linux_amd64
+      # - name: Get branch envs
+      #   id: branch_envs
+      #   run: |
+      #     echo ::set-output name=SOURCE_BRANCH::${GITHUB_REF#refs/heads/feature/}
+
+      # - name: Build
+      #   run: |
+      #     GOOS=darwin GOARCH=amd64 make build RELEASE=${SOURCE_BRANCH} BINARY_NAME=${APP_NAME}_${SOURCE_BRANCH}_darwin_amd64
+      #     GOOS=linux GOARCH=amd64 make build RELEASE=${SOURCE_BRANCH} BINARY_NAME=${APP_NAME}_${SOURCE_BRANCH}_linux_amd64
+      #   env: 
+      #     APP_NAME: ${{ env.app_name }}
+      #     SOURCE_BRANCH: ${{ steps.branch_envs.outputs.SOURCE_BRANCH }}
+
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #     name: ${{ env.app_name }}_${{ steps.branch_envs.outputs.SOURCE_BRANCH }}_darwin_amd64
+      #     path: ${{ env.app_name }}_${{ steps.branch_envs.outputs.SOURCE_BRANCH }}_darwin_amd64
+
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #     name: ${{ env.app_name }}_${{ steps.branch_envs.outputs.SOURCE_BRANCH }}_linux_amd64
+      #     path: ${{ env.app_name }}_${{ steps.branch_envs.outputs.SOURCE_BRANCH }}_linux_amd64
