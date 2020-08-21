@@ -2,44 +2,32 @@
 
 [![Actions Status](https://github.com/dlampsi/fcl/workflows/default/badge.svg)](https://github.com/dlampsi/fcl/actions)
 
-Simple app for cleanup files on you hosts.
+File cleaner (fcl) is app for cleanup files from host folder (and subfolders) by modification time and/or file size.
 
 ## Setup
 
 You can download releases [here](https://github.com/dlampsi/fcl/releases).
 
-Actions example for darwin OS, version 1.0.0:
+Install commands example for version `0.0.1`:
 ```bash
-wget https://github.com/dlampsi/fcl/releases/download/1.0.0/fcl_1.0.0_darwin_amd64.zip
-unzip fcl_1.0.0_darwin_amd64.zip
+wget https://github.com/dlampsi/fcl/releases/download/1.0.0/fcl_0.0.1_darwin_amd64.zip
+unzip fcl_0.0.1_darwin_amd64.zip
 mv fcl_darwin_amd64 /usr/local/bin/fcl
 chmod +x /usr/local/bin/fcl
 ```
 
 ## Usage
 
+All usage commands available on help flag:
+
 ```bash
--check
-    Run app in check mode. Only list files to delete
--mtime int
-    Remove files by age (in days)
--no-colors
-    Disable colors in app output
--path string
-    Working dir path (default ".")
--size float
-    Remove files by age (in MB)
--skip-dirs string
-    A comma-separated list of dirs for deletion skip
--skip-files string
-    A comma-separated list of full path to files for deletion skip
--v    Verbose output
+fcl -h
 ```
 
-## Examples
+Some command examples:
 
 ```bash
-# Remove all files in current dir and subdirs older than 1 day
+# Remove all files in CURRENT dir and subdirs older than 1 day
 fcl -mtime 1
 
 # Remove all files in specific folder dir and subdirs older than 1 day
