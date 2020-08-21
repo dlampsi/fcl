@@ -8,11 +8,11 @@ File cleaner (fcl) is app for cleanup files from host folder (and subfolders) by
 
 You can download releases [here](https://github.com/dlampsi/fcl/releases).
 
-Install commands example for version `0.0.1`:
+Install commands example for version `0.0.1` on linux OS:
 ```bash
-wget https://github.com/dlampsi/fcl/releases/download/1.0.0/fcl_0.0.1_darwin_amd64.zip
-unzip fcl_0.0.1_darwin_amd64.zip
-mv fcl_darwin_amd64 /usr/local/bin/fcl
+wget https://github.com/dlampsi/fcl/releases/download/0.0.1/fcl_0.0.1_linux_amd64.zip
+unzip fcl_0.0.1_linux_amd64.zip
+mv fcl_0.0.1_linux_amd64 /usr/local/bin/fcl
 chmod +x /usr/local/bin/fcl
 ```
 
