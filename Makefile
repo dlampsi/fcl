@@ -2,7 +2,7 @@
 
 PROJECT_NAME=fcl
 BINARY_NAME?=fcl
-RELEASE?=dev
+RELEASE?=0.0.0
 BUILD_TIME?=$(shell date '+%Y-%m-%d_%H:%M:%S')
 COMMIT_HASH=$(shell git rev-parse --short HEAD)
 
