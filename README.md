@@ -39,6 +39,9 @@ fcl -path /dummy/path -mtime 1
 # Remove all files in specific folder dir and subdirs older than 1 day with exception dir and file
 fcl -path /dummy/path -mtime 1 -skip /dummy/path/subdir1,/dummy/path/file.log
 
+# Remove all files in specific folder dir and subdirs older than 1 day and delete empty directories after that
+fcl -path /dummy/path -mtime 1 -cleanup-empty-dirs
+
 # Delete files bigger than 10MB
 fcl -path /dummy/path -size 10
 
